@@ -1,0 +1,8 @@
+{
+	"name": "raytracerd",
+	"authors": [
+		"hjbyt"
+	],
+	"description": "A ray tracing renderer",
+	"license": "MIT"
+}
