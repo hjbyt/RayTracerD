@@ -60,7 +60,7 @@ struct Vector(T, int n)
         import std.range : zip;
         import std.algorithm : map, sum;
 
-        return zip(data[0 .. $], other.data[0 .. $]).map!"a[0]*a[1]".sum;
+        return zip(data[], other.data[]).map!"a[0]*a[1]".sum;
     }
 
     static if (n == 3)
@@ -72,6 +72,36 @@ struct Vector(T, int n)
             auto z = this.x * other.y - this.y * other.x;
             return Vector(x, y, z);
         }
+    }
+
+    Vector opUnary(string op)() const if (op == "+" || op == "-")
+    {
+        static if (op == "+")
+        {
+            return this;
+        }
+        else static if (op == "-")
+        {
+            T[n] new_data = -data[];
+            return Vector(new_data);
+        }
+        else
+        {
+            static assert(0, "Operator " ~ op ~ " not implemented");
+        }
+
+    }
+
+    T norm_squared() const
+    {
+        return this.dot(this);
+    }
+
+    T norm() const
+    {
+        import std.math : sqrt;
+
+        return sqrt(this.norm_squared);
     }
 }
 
