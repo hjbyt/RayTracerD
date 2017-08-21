@@ -55,6 +55,7 @@ struct Vector(T, int n)
         data[2] = t;
     }
 
+    //TODO: change to an implementation without ranges, as optimization?
     T dot(const ref Vector other) const
     {
         import std.range : zip;
@@ -65,16 +66,16 @@ struct Vector(T, int n)
 
     static if (n == 3)
     {
-        Vector cross(const ref Vector other)
+        Vector cross(const ref Vector other) const
         {
-            auto x = this.y * other.z - this.z * other.y;
-            auto y = other.x * this.z - other.z * this.x;
-            auto z = this.x * other.y - this.y * other.x;
+            immutable x = this.y * other.z - this.z * other.y;
+            immutable y = other.x * this.z - other.z * this.x;
+            immutable z = this.x * other.y - this.y * other.x;
             return Vector(x, y, z);
         }
     }
 
-    Vector opUnary(string op)() const if (op == "+" || op == "-")
+    Vector opUnary(string op)() const
     {
         static if (op == "+")
         {
