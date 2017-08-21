@@ -93,16 +93,49 @@ struct Vector(T, int n)
 
     }
 
+    Vector opBinary(string op)(const ref Vector rhs) const if (op == "+" || op == "-")
+    {
+        T[n] result = mixin("this[]" ~ op ~ "rhs[]");
+        return Vector(result);
+    }
+
+    T opBinary(string op)(const ref Vector rhs) const if (op == "*")
+    {
+        return this.dot(rhs);
+    }
+
+    Vector opBinary(string op)(T rhs) const if (op == "*" || op == "/")
+    {
+        T[n] result = mixin("this[]" ~ op ~ "rhs");
+        return Vector(result);
+    }
+
+    Vector opBinaryRight(string op)(T lhs) const if (op == "*")
+    {
+        T[n] result = lhs * this[];
+        return Vector(result);
+    }
+
+    void opOpAssign(string op)(Vector rhs) if (op == "+" || op == "-")
+    {
+        mixin("this.data[] " ~ op ~ "= rhs.data[];");
+    }
+
+    void opOpAssign(string op)(T rhs) if (op == "*" || op == "/")
+    {
+        mixin("this.data[] " ~ op ~ "= rhs;");
+    }
+
     T norm_squared() const
     {
-        return this.dot(this);
+        return this * this;
     }
 
     T norm() const
     {
         import std.math : sqrt;
 
-        return sqrt(this.norm_squared);
+        return sqrt(norm_squared);
     }
 }
 
