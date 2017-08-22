@@ -15,8 +15,7 @@ struct Vector(T, int n)
 
     this(T value)
     {
-        T[n] data = new T[n];
-        data[] = value;
+        T[n] data = value;
         this(data);
     }
 
