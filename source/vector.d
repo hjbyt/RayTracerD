@@ -20,7 +20,7 @@ struct Vector(T, int n)
         this(data);
     }
 
-    static zero()
+    static Vector zero()
     {
         return Vector(0);
     }
@@ -136,6 +136,27 @@ struct Vector(T, int n)
         import std.math : sqrt;
 
         return sqrt(norm_squared);
+    }
+
+    ref Vector normalize()
+    {
+        this /= norm;
+        return this;
+    }
+
+    Vector normalized() const
+    {
+        return this / norm;
+    }
+
+    Vector directionTo(const ref Vector other) const
+    {
+        return (this - other).normalize();
+    }
+
+    T distanceTo(const ref Vector other) const
+    {
+        return (this - other).norm;
     }
 }
 
