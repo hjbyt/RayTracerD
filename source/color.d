@@ -19,10 +19,7 @@ struct Color_(T)
         this(data);
     }
 
-    static Color black()
-    {
-        return Color(0);
-    }
+    static Color black = Color(0);
 
     @property T r() const
     {
