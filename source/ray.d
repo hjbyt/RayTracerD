@@ -1,4 +1,4 @@
-import vector;
+import vector : Vec3;
 
 struct Ray
 {
