@@ -19,7 +19,7 @@ struct Material
         this.reflectionColor = reflectionColor;
         this.phongSpecularity = phongSpecularity;
         this.transparency = transparency;
-        this._isTransparent = transparency > 0.0;
+        this._isTransparent = transparency > 0;
         this._isReflective = reflectionColor != Color.black;
         this._isSpecular = specularColor != Color.black;
     }
