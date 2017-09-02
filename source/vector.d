@@ -165,6 +165,12 @@ struct Vector(T, int n)
     {
         return (this - other).norm;
     }
+
+    Vector reflectAround(const ref Vector other) const
+    {
+        auto d = other * this;
+        return ((2 * d) * other) - this;
+    }
 }
 
 alias Vec3 = Vector!(double, 3);
