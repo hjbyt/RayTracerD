@@ -18,7 +18,7 @@ class Sphere : ModelObject
         this.radius = radius;
     }
 
-    override Material material()
+    override Material material() const
     {
         return _material;
     }

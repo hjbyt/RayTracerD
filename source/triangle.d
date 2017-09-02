@@ -28,7 +28,7 @@ class Triangle : ModelObject
         this.offset = this.normal * v1;
     }
 
-    override Material material()
+    override Material material() const
     {
         return _material;
     }

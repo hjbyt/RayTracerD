@@ -18,7 +18,7 @@ class Plane : ModelObject
         this.offset = offset;
     }
 
-    override Material material()
+    override Material material() const
     {
         return _material;
     }
