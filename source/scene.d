@@ -280,8 +280,31 @@ struct Scene
 
     double getRayIntensity(const ref Hit hit, const ref Ray ray) const
     {
-        //TODO
-        return 1;
+        double rayIntensity = 1;
+        auto maxHitDistance = hit.hitPoint.distanceTo(ray.position) + EPSILON;
+        foreach (rayHit; findHits(ray))
+        {
+            //TODO: make sure this short circuits
+            // Check if we got to the given hit or if we passed it
+            // (at object edges ray_hit can miss the original ray hit)
+            auto objectsEqual = rayHit.object == hit.object;
+            auto hitsAlmostEqual = objectsEqual
+                && rayHit.hitPoint.almostEqualTo(hit.hitPoint, EPSILON);
+            auto passedMaxDistance = rayHit.hitPoint.distanceTo(ray.position) > maxHitDistance;
+            if (hitsAlmostEqual || passedMaxDistance)
+            {
+                break;
+            }
+            // Check if we hit an opaque object
+            if (!rayHit.object.material.isTransparent())
+            {
+                rayIntensity = 0;
+                break;
+            }
+            // Attenuate intensity
+            rayIntensity *= rayHit.object.material.transparency;
+        }
+        return rayIntensity;
     }
 }
 

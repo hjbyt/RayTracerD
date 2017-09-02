@@ -171,6 +171,11 @@ struct Vector(T, int n)
         auto d = other * this;
         return ((2 * d) * other) - this;
     }
+
+    bool almostEqualTo(const ref Vector other, T epsilon) const
+    {
+        return distanceTo(other) <= epsilon;
+    }
 }
 
 alias Vec3 = Vector!(double, 3);
