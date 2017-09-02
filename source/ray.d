@@ -11,7 +11,7 @@ struct Ray
         this.direction = direction;
     }
 
-    static Ray construct_ray(Vec3 from, Vec3 to)
+    static Ray constructRay(Vec3 from, Vec3 to)
     {
         return Ray(from, from.directionTo(to));
     }
