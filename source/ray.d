@@ -7,6 +7,8 @@ struct Ray
 
     this(Vec3 position, Vec3 direction)
     {
+        import utils : almostEq;
+        assert(direction.norm.almostEq(1));
         this.position = position;
         this.direction = direction;
     }
