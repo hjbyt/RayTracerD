@@ -196,7 +196,7 @@ Color parseColor(T)(ref T params)
 }
 
 //TODO: compile only for tests
-void test_scene(string fileName)
+void testScene(string fileName)
 {
     import std.path;
     import std.file;
@@ -222,5 +222,5 @@ void test_scene(string fileName)
 
 unittest
 {
-    test_scene("Room1.txt");
+    testScene("Room1.txt");
 }
