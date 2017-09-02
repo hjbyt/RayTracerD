@@ -245,7 +245,42 @@ struct Scene
 
     double getLightIntensityForHit(const ref Light light, const ref Hit hit) const
     {
-        //TODO;
+        import std.random : uniform01;
+
+        auto lightDirection = hit.hitPoint.directionTo(light.position);
+        bool edgeCase = lightDirection.x == 0 && lightDirection.y == 0;
+        auto directionX = edgeCase ? Vec3(1, 0, 0) : Vec3(-lightDirection.y,
+                lightDirection.x, lightDirection.z);
+        auto directionY = lightDirection.cross(directionX).normalize();
+
+        alias n = shadowRaysN;
+        auto cellRadius = light.radius / double(n);
+        auto halfRadius = cellRadius / 2;
+
+        double totalIntensity = 0;
+        for (uint x = 0; x < n; ++x)
+        {
+            for (uint y = 0; y < n; ++y)
+            {
+                auto xOffset = cellRadius * (double(x) + uniform01()) - halfRadius;
+                auto yOffset = cellRadius * (double(y) + uniform01()) - halfRadius;
+                auto xDelta = directionX * xOffset;
+                auto yDelta = directionY * yOffset;
+                auto cellPoint = light.position + xDelta + yDelta;
+                auto ray = Ray.constructRay(cellPoint, hit.hitPoint);
+                totalIntensity += getRayIntensity(hit, ray);
+            }
+        }
+
+        auto intensity = totalIntensity / double(n ^^ 2);
+        // Interpolate intensity such that the minimum is shadow_intensity
+        intensity = 1 - ((1 - intensity) * light.shadowIntensity);
+        return intensity;
+    }
+
+    double getRayIntensity(const ref Hit hit, const ref Ray ray) const
+    {
+        //TODO
         return 1;
     }
 }
