@@ -66,9 +66,9 @@ struct SubpixelRange
     uint i;
     uint j;
 
-    this(const ref Camera, uint x, uint y)
+    this(const ref Camera camera, uint x, uint y)
     {
-        this.camera = camera;
+        this.camera = &camera;
         this.x = x;
         this.y = y;
         this.i = 0;
