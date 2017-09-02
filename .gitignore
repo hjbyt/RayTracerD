@@ -7,3 +7,4 @@ __test__*__
 .idea/
 out/
 RayTracerD.iml
+outputs/

@@ -111,13 +111,14 @@ struct Scene
 
     Image render() const
     {
+        //TODO: multithreaded
         Image image = Image(camera.imageWidth, camera.imageHeight);
         for (uint y = 0; y < camera.imageHeight; ++y)
         {
             for (uint x = 0; x < camera.imageWidth; ++x)
             {
-                auto pixel = renderPixel(x,y);
-                image.set(x,y, pixel);
+                auto pixel = renderPixel(x, y);
+                image.set(x, y, pixel);
             }
         }
         return image;
@@ -198,9 +199,21 @@ Color parseColor(T)(ref T params)
 void test_scene(string fileName)
 {
     import std.path;
+    import std.file;
 
+    immutable outputsDir = "outputs";
     auto scenePath = buildPath("scenes", fileName);
+    auto outputPath = buildPath(outputsDir, fileName);
+
     auto scene = Scene.fromFile(scenePath);
+    //TODO: measure time
+    auto image = scene.render();
+    outputPath = outputPath.setExtension("png");
+    if (!outputsDir.exists)
+    {
+        outputsDir.mkdir();
+    }
+    image.save(outputPath);
 }
 
 unittest
