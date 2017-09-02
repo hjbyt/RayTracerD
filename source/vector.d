@@ -19,10 +19,7 @@ struct Vector(T, int n)
         this(data);
     }
 
-    static Vector zero()
-    {
-        return Vector(0);
-    }
+    static immutable Vector zero = Vector(0);
 
     @property T x() const
     {
@@ -98,10 +95,21 @@ struct Vector(T, int n)
         return Vector(result);
     }
 
+    Vector opBinary(string op)(Vector rhs) const if (op == "+" || op == "-")
+    {
+        T[n] result = mixin("this[]" ~ op ~ "rhs[]");
+        return Vector(result);
+    }
+
     T opBinary(string op)(const ref Vector rhs) const if (op == "*")
     {
         return this.dot(rhs);
     }
+
+    T opBinary(string op)(Vector rhs) const if (op == "*")
+        {
+            return this.dot(rhs);
+        }
 
     Vector opBinary(string op)(T rhs) const if (op == "*" || op == "/")
     {
@@ -125,7 +133,7 @@ struct Vector(T, int n)
         mixin("this.data[] " ~ op ~ "= rhs;");
     }
 
-    T norm_squared() const
+    T normSquared() const
     {
         return this * this;
     }
@@ -134,7 +142,7 @@ struct Vector(T, int n)
     {
         import std.math : sqrt;
 
-        return sqrt(norm_squared);
+        return sqrt(normSquared);
     }
 
     ref Vector normalize()

@@ -19,7 +19,7 @@ struct Color_(T)
         this(data);
     }
 
-    static Color black = Color(0);
+    static immutable Color black = Color(0);
 
     @property T r() const
     {
@@ -57,6 +57,12 @@ struct Color_(T)
     }
 
     Color opBinary(string op)(const ref Color rhs) const if (op == "+" || op == "*")
+    {
+        T[3] result = mixin("this[]" ~ op ~ "rhs[]");
+        return Color(result);
+    }
+
+    Color opBinary(string op)(Color rhs) const if (op == "+" || op == "*")
     {
         T[3] result = mixin("this[]" ~ op ~ "rhs[]");
         return Color(result);
