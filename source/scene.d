@@ -200,14 +200,18 @@ void test_scene(string fileName)
 {
     import std.path;
     import std.file;
+    import std.datetime;
+    import std.stdio;
 
     immutable outputsDir = "outputs";
     auto scenePath = buildPath("scenes", fileName);
     auto outputPath = buildPath(outputsDir, fileName);
 
     auto scene = Scene.fromFile(scenePath);
-    //TODO: measure time
+    auto start = MonoTime.currTime;
     auto image = scene.render();
+    auto duration = MonoTime.currTime - start;
+    writefln("Rendered scene %s in %s", fileName, duration);
     outputPath = outputPath.setExtension("png");
     if (!outputsDir.exists)
     {
