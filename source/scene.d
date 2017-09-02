@@ -13,6 +13,7 @@ import hit : Hit;
 import std.conv : to;
 
 //TODO: import only specific names
+import utils;
 import std.math;
 import std.algorithm;
 
@@ -229,8 +230,17 @@ struct Scene
 
     Color getHitReflectionColor(const ref Hit hit, uint recursionLevel) const
     {
-        //TODO
-        return Color.black;
+        if (!hit.object.material.isReflective)
+        {
+            return Color.black;
+        }
+        auto hitReflectionDirection = hit.directionToSource.reflectAround(hit.hitNormal);
+        assert(almostEq(hitReflectionDirection.norm, 1));
+        auto reflectionRay = Ray(hit.hitPoint, hitReflectionDirection);
+        // Move reflection exit point forward a bit to avoid numeric issues (hitting the same surface)
+        reflectionRay.advance(RAY_SMALL_ADVANCEMENT);
+        auto reflectionColor = colorRayHits(reflectionRay, recursionLevel);
+        return reflectionColor * hit.object.material.reflectionColor;
     }
 
     double getLightIntensityForHit(const ref Light light, const ref Hit hit) const
