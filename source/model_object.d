@@ -6,5 +6,5 @@ import std.typecons : Nullable;
 interface ModelObject
 {
     Material material();
-    Nullable!Hit tryHit(ref Ray ray);
+    Nullable!Hit tryHit(const ref Ray ray) const;
 }
