@@ -12,6 +12,10 @@ import light : Light;
 import hit : Hit;
 import std.conv : to;
 
+//TODO: import only specific names
+import std.math;
+import std.algorithm;
+
 immutable RAY_SMALL_ADVANCEMENT = 0.000000001;
 
 struct Scene
@@ -183,14 +187,56 @@ struct Scene
 
     Color getHitDirectColor(const ref Hit hit) const
     {
-        //TODO
-        return Color.black;
+        Color totalDiffuseComponent = Color.black;
+        Color totalSpecularComponent = Color.black;
+
+        foreach (light; lights)
+        {
+            auto lightIntensity = getLightIntensityForHit(light, hit);
+            if (lightIntensity == 0)
+            {
+                continue;
+            }
+
+            auto lightColor = light.color * lightIntensity;
+            auto directionToLight = hit.hitPoint.directionTo(light.position);
+
+            // Diffuse component
+            auto diffusion = hit.hitNormal * directionToLight;
+            assert(!diffusion.isNaN && diffusion <= 1);
+            diffusion = diffusion.max(0);
+            auto diffuseColor = lightColor * diffusion;
+            totalDiffuseComponent += diffuseColor;
+
+            // Specular Component
+            if (hit.object.material.isSpecular)
+            {
+                auto directionToLightReflection = directionToLight.reflectAround(hit.hitNormal);
+                auto cosAngle = directionToLightReflection * hit.directionToSource;
+                if (cosAngle > 0)
+                {
+                    auto specular = cosAngle ^^ hit.object.material.phongSpecularity;
+                    auto specularColor = (specular * light.specularIntensity) * lightColor;
+                    totalSpecularComponent += specularColor;
+                }
+            }
+        }
+        totalDiffuseComponent *= hit.object.material.diffuseColor;
+        totalSpecularComponent *= hit.object.material.specularColor;
+
+        return totalDiffuseComponent + totalSpecularComponent;
     }
 
     Color getHitReflectionColor(const ref Hit hit, uint recursionLevel) const
     {
         //TODO
         return Color.black;
+    }
+
+    double getLightIntensityForHit(const ref Light light, const ref Hit hit) const
+    {
+        //TODO;
+        return 1;
     }
 }
 
