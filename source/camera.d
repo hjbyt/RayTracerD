@@ -10,8 +10,8 @@ struct Camera
     double screenDistance;
     double screenHeight;
     double screenWidth;
-    double imageHeight;
-    double imageWidth;
+    uint imageHeight;
+    uint imageWidth;
     Vec3 screenCenter;
     uint superSamplingN;
 

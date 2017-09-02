@@ -109,6 +109,20 @@ struct Scene
                 superSamplingN, objects, camera, lights);
     }
 
+    Image render() const
+    {
+        Image image = Image(camera.imageWidth, camera.imageHeight);
+        for (uint y = 0; y < camera.imageHeight; ++y)
+        {
+            for (uint x = 0; x < camera.imageWidth; ++x)
+            {
+                auto pixel = renderPixel(x,y);
+                image.set(x,y, pixel);
+            }
+        }
+        return image;
+    }
+
     Color renderPixel(uint x, uint y) const
     {
         import std.algorithm;
