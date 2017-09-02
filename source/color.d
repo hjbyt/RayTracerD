@@ -77,7 +77,7 @@ struct Color_(T)
     Color opBinaryRight(string op)(T lhs) const if (op == "*")
     {
         T[3] result = lhs * this[];
-        return Vector(result);
+        return Color(result);
     }
 
     void opOpAssign(string op)(Color rhs) if (op == "+" || op == "*")
