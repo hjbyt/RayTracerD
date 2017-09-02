@@ -56,8 +56,9 @@ struct Scene
             {
             case "cam":
                 //TODO: parse image size from file
+                //TODO: restore default image size to 500x500
                 camera = Camera(parts.parseVec3, parts.parseVec3, parts.parseVec3,
-                        parts.parseDouble, parts.parseDouble, 500, 500, 1).nullable;
+                        parts.parseDouble, parts.parseDouble, 50, 50, 1).nullable;
                 break;
             case "set":
                 backgroundColor = parts.parseColor.nullable;
