@@ -4,5 +4,8 @@
 		"hjbyt"
 	],
 	"description": "A ray tracing renderer",
-	"license": "MIT"
+	"license": "MIT",
+	"dependencies": {
+      "imageformats": "~>6.1.1"
+	}
 }
