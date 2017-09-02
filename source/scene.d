@@ -9,6 +9,7 @@ import triangle : Triangle;
 import image : Image;
 import ray : Ray;
 import light : Light;
+import hit : Hit;
 import std.conv : to;
 
 immutable RAY_SMALL_ADVANCEMENT = 0.000000001;
@@ -107,6 +108,40 @@ struct Scene
         return Scene(backgroundColor, shadowRaysN, maxRecursion,
                 superSamplingN, objects, camera, lights);
     }
+
+    Color renderPixel(uint x, uint y) const
+    {
+        auto rays = camera.constructRaysThroughPixel(x, y);
+        //rays.map()
+        //TODO
+        return Color.black;
+    }
+
+    Color colorRayHits(const ref Ray ray, uint recursionLevel) const
+    {
+        recursionLevel += 1;
+        if (recursionLevel > maxRecursion)
+        {
+            return backgroundColor;
+        }
+        //TODO
+        return Color.black;
+    }
+
+    Hit[] findHits(const ref Ray ray) const
+    {
+        import std.algorithm : map, filter, sort, makeIndex, SwapStrategy;
+        import std.array : array;
+
+        alias myComp = (a, b) => a.distance < b.distance;
+        alias myComp2 = (a, b) => a < b;
+        auto hits = objects.map!(object => object.tryHit(ray))
+            .filter!(hit => !hit.isNull).map!(hit => hit.get).array;
+        auto index = new size_t[hits.length];
+        makeIndex!("a.distance < b.distance")(hits, index);
+        return index.map!(i => hits[i]).array;
+    }
+
 }
 
 auto pop(T)(ref T params)
