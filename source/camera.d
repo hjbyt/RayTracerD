@@ -38,7 +38,7 @@ struct Camera
         this.subpixelHeight = pixelHeight / superSamplingN;
     }
 
-    SubpixelRange constructRaysThroughPixel(uint x, uint y)
+    SubpixelRange constructRaysThroughPixel(uint x, uint y) const
     {
         return SubpixelRange(this, x, y);
     }
