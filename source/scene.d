@@ -162,6 +162,33 @@ struct Scene
 
     Color colorHits(const ref Hit[] hits, uint recursionLevel) const
     {
+        Color totalColor = Color.black;
+        double prevTransparency = 1;
+        foreach (hit; hits)
+        {
+            auto currentTransparency = hit.object.material.transparency;
+            auto direct = getHitDirectColor(hit) * (1 - currentTransparency);
+            auto reflection = getHitReflectionColor(hit, recursionLevel);
+            auto color = (direct + reflection) * prevTransparency;
+            totalColor += color;
+            prevTransparency *= currentTransparency;
+            if (currentTransparency == 0)
+            {
+                return totalColor;
+            }
+        }
+
+        return totalColor + backgroundColor * prevTransparency;
+    }
+
+    Color getHitDirectColor(const ref Hit hit) const
+    {
+        //TODO
+        return Color.black;
+    }
+
+    Color getHitReflectionColor(const ref Hit hit, uint recursionLevel) const
+    {
         //TODO
         return Color.black;
     }
