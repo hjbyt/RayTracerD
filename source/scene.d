@@ -111,10 +111,12 @@ struct Scene
 
     Color renderPixel(uint x, uint y) const
     {
+        import std.algorithm;
+
         auto rays = camera.constructRaysThroughPixel(x, y);
-        //rays.map()
-        //TODO
-        return Color.black;
+        auto length = rays.length;
+        Color totalColor = rays.map!(ray => colorRayHits(ray, 0)).sum();
+        return totalColor / length;
     }
 
     Color colorRayHits(const ref Ray ray, uint recursionLevel) const
@@ -124,8 +126,8 @@ struct Scene
         {
             return backgroundColor;
         }
-        //TODO
-        return Color.black;
+        auto hits = findHits(ray);
+        return colorHits(hits, recursionLevel);
     }
 
     Hit[] findHits(const ref Ray ray) const
@@ -142,6 +144,11 @@ struct Scene
         return index.map!(i => hits[i]).array;
     }
 
+    Color colorHits(const ref Hit[] hits, uint recursionLevel) const
+    {
+        //TODO
+        return Color.black;
+    }
 }
 
 auto pop(T)(ref T params)

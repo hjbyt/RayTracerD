@@ -104,4 +104,9 @@ struct SubpixelRange
         auto ray = Ray.constructRay(camera.position, subcellPoint);
         return ray;
     }
+
+    @property size_t length()
+    {
+        return camera.superSamplingN ^^ 2;
+    }
 }
