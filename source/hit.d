@@ -10,7 +10,7 @@ struct Hit
     const ModelObject object;
     Vec3 directionToSource;
 
-    this(Ray hitRay, double distance, Vec3 hitNormal, Vec3 hitPoint, const ModelObject model_object)
+    this(Ray hitRay, double distance, Vec3 hitNormal, Vec3 hitPoint, const ModelObject object)
     {
         this.distance = distance;
         this.hitNormal = hitNormal;
