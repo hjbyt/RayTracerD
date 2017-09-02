@@ -14,6 +14,7 @@ struct Light
         assert(0 <= shadowIntensity && shadowIntensity <= 1);
         this.position = position;
         this.color = color;
+        this.specularIntensity = specularIntensity;
         this.shadowIntensity = shadowIntensity;
         this.radius = radius;
     }
